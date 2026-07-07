@@ -1,3 +1,5 @@
+<p align="center"><img src="assets/logo-256.png" width="120" alt="Nexiora logo"></p>
+
 # Nexiora ($NXIO)
 
 **Fixed-supply, immutable ERC-20 token, live on Base mainnet.**
