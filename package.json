@@ -1,0 +1,32 @@
+{
+  "name": "nexiora",
+  "version": "1.0.0",
+  "description": "Nexiora ($NXIO) — fixed-supply, immutable ERC-20 token on Base mainnet",
+  "private": true,
+  "scripts": {
+    "compile": "node scripts/compile.js",
+    "generate-wallet": "node scripts/generate-wallet.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tradeytrade/Nexiora.git"
+  },
+  "keywords": [
+    "erc20",
+    "token",
+    "base",
+    "ethereum",
+    "solidity",
+    "nexiora",
+    "nxio"
+  ],
+  "author": "tradeytrade",
+  "license": "MIT",
+  "devDependencies": {
+    "solc": "^0.8.28"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.4.0",
+    "ethers": "^6.17.0"
+  }
+}

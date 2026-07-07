@@ -1,0 +1,14 @@
+{
+  "network": "sepolia",
+  "chainId": 11155111,
+  "contract": "0xa896960FB23f526B0791b442C51fDa1a2ee5F445",
+  "deployTx": "0x1dffed80ffd2b0bb786cd0f8e41dfecbd7617e12e2bf8f3b324bca59ec81e3e6",
+  "deployer": "0x10039AE037187e3990E3544ccBA889fDf9Ab2a70",
+  "recipient": "0xdB70De27D0BFf3dC534029Fd4854e6Ed7312a64B",
+  "supply": "10000000000",
+  "constructorArgs": [
+    "0xdB70De27D0BFf3dC534029Fd4854e6Ed7312a64B",
+    "10000000000000000000000000000"
+  ],
+  "date": "2026-07-06T16:58:09.756Z"
+}

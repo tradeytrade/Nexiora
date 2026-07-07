@@ -1,0 +1,14 @@
+{
+  "network": "base",
+  "chainId": 8453,
+  "contract": "0x90103aFee7f15f96A2DCBa2b7FF5459BfbfC4CaD",
+  "deployTx": "0xec642ed6452b218430023f0cd7bf89607ccb6e60af61c83411136c501439eeee",
+  "deployer": "0x4EbdDa045509539133d9C110EDAA1A4Ee8A1464e",
+  "recipient": "0xdB70De27D0BFf3dC534029Fd4854e6Ed7312a64B",
+  "supply": "10000000000",
+  "constructorArgs": [
+    "0xdB70De27D0BFf3dC534029Fd4854e6Ed7312a64B",
+    "10000000000000000000000000000"
+  ],
+  "date": "2026-07-07T09:20:25.067Z"
+}
