@@ -17,9 +17,11 @@ const stdJsonInput = fs.readFileSync(path.join(root, "artifacts", "verify-input.
 
 const API = "https://api.etherscan.io/v2/api";
 
+// Etherscan v2 requires chainid in the query string (not the POST body)
 async function call(params) {
-  const body = new URLSearchParams({ ...params, chainid: String(deployment.chainId), apikey: apiKey });
-  const res = await fetch(API, { method: "POST", body });
+  const url = `${API}?chainid=${deployment.chainId}`;
+  const body = new URLSearchParams({ ...params, apikey: apiKey });
+  const res = await fetch(url, { method: "POST", body });
   return res.json();
 }
 
