@@ -4,6 +4,8 @@
 
 **Fixed-supply, immutable ERC-20 token, live on Base mainnet.**
 
+**Website:** [tradeytrade.github.io/Nexiora](https://tradeytrade.github.io/Nexiora/)
+
 [![Chain: Base](https://img.shields.io/badge/chain-Base%20mainnet-0052FF)](https://basescan.org/token/0x90103aFee7f15f96A2DCBa2b7FF5459BfbfC4CaD)
 [![Solidity 0.8.28](https://img.shields.io/badge/solidity-0.8.28-363636)](contracts/Nexiora.sol)
 [![OpenZeppelin 5.x](https://img.shields.io/badge/OpenZeppelin-5.x-4E5EE4)](https://github.com/OpenZeppelin/openzeppelin-contracts)
