@@ -16,38 +16,45 @@
 <meta name="twitter:image" content="https://raw.githubusercontent.com/tradeytrade/Nexiora/main/assets/logo-256.png">
 <meta name="theme-color" content="#070b12">
 <link rel="canonical" href="https://tradeytrade.github.io/Nexiora/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%2338BDF8'/%3E%3Cstop offset='1' stop-color='%23075E8F'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='128' cy='128' r='128' fill='url(%23g)'/%3E%3Cg stroke='%23fff' stroke-width='8' stroke-linecap='round' stroke-linejoin='round' opacity='.45' fill='none'%3E%3Cpath d='M128 130 L64 166 M128 130 L192 166 M128 130 L128 54'/%3E%3C/g%3E%3Cg stroke='%23fff' stroke-width='13' stroke-linecap='round' stroke-linejoin='round' fill='none'%3E%3Cpath d='M128 54 L192 90 L192 166 L128 202 L64 166 L64 90 Z'/%3E%3Cpath d='M128 126 L64 90 M128 126 L192 90 M128 126 L128 202'/%3E%3C/g%3E%3C/svg%3E">
 <style>
   :root {
     --bg: #070b12;
-    --bg-2: #0a1019;
     --surface: rgba(148, 197, 255, 0.045);
     --surface-2: rgba(148, 197, 255, 0.08);
     --border: rgba(148, 197, 255, 0.14);
-    --border-strong: rgba(148, 197, 255, 0.28);
+    --border-strong: rgba(148, 197, 255, 0.30);
     --ink: #eef4fb;
     --ink-2: #a8b6c8;
     --muted: #6b7a8d;
     --cyan: #38bdf8;
     --cyan-deep: #0ea5e9;
-    --teal: #075e8f;
     --good: #34d399;
     --warn: #fbbf24;
+    --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --display: "Space Grotesk", "Inter", system-ui, sans-serif;
     --mono: ui-monospace, SFMono-Regular, "Cascadia Code", Menlo, Consolas, monospace;
+    --ease: cubic-bezier(0.22, 0.61, 0.21, 1);
   }
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; scroll-padding-top: 84px; }
   body {
     margin: 0;
     background: var(--bg);
     color: var(--ink);
-    font: 16px/1.65 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font: 16px/1.66 var(--font);
     -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
     overflow-x: hidden;
   }
   ::selection { background: rgba(56, 189, 248, 0.35); }
+  a { -webkit-tap-highlight-color: transparent; }
+  :focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; border-radius: 4px; }
 
-  /* ambient background */
+  /* ---------- ambient background ---------- */
   .sky {
     position: fixed; inset: 0; z-index: -1; pointer-events: none;
     background:
@@ -62,50 +69,106 @@
       linear-gradient(rgba(148, 197, 255, 0.045) 1px, transparent 1px),
       linear-gradient(90deg, rgba(148, 197, 255, 0.045) 1px, transparent 1px);
     background-size: 44px 44px;
-    mask-image: radial-gradient(800px 480px at 50% 0%, rgba(0,0,0,0.9), transparent 75%);
-    -webkit-mask-image: radial-gradient(800px 480px at 50% 0%, rgba(0,0,0,0.9), transparent 75%);
+    mask-image: radial-gradient(820px 500px at 50% 0%, rgba(0,0,0,0.9), transparent 75%);
+    -webkit-mask-image: radial-gradient(820px 500px at 50% 0%, rgba(0,0,0,0.9), transparent 75%);
   }
 
-  .wrap { max-width: 980px; margin: 0 auto; padding: 0 24px; }
+  .wrap { max-width: 1020px; margin: 0 auto; padding: 0 24px; }
 
-  /* nav */
+  /* ---------- scroll progress ---------- */
+  .progress {
+    position: fixed; top: 0; left: 0; height: 2px; width: 100%; z-index: 40;
+    transform-origin: 0 50%; transform: scaleX(0);
+    background: linear-gradient(90deg, var(--cyan-deep), var(--cyan) 60%, #8be4ff);
+  }
+
+  /* ---------- nav ---------- */
   nav {
-    position: sticky; top: 0; z-index: 10;
-    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-    background: rgba(7, 11, 18, 0.72);
-    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 30;
+    backdrop-filter: blur(16px) saturate(1.4); -webkit-backdrop-filter: blur(16px) saturate(1.4);
+    background: rgba(7, 11, 18, 0.70);
+    border-bottom: 1px solid transparent;
+    transition: border-color .3s var(--ease), background .3s var(--ease);
   }
+  nav.scrolled { border-bottom-color: var(--border); background: rgba(7, 11, 18, 0.82); }
   .nav-in { display: flex; align-items: center; gap: 10px; padding: 13px 0; }
-  .nav-in svg { width: 27px; height: 27px; flex: none; }
-  .nav-name { font-weight: 700; letter-spacing: 0.01em; }
-  .nav-ticker { color: var(--cyan); font-family: var(--mono); font-size: 13px; margin-top: 1px; }
-  .nav-links { margin-left: auto; display: flex; gap: 20px; font-size: 14px; }
-  .nav-links a { color: var(--ink-2); text-decoration: none; transition: color .15s; }
-  .nav-links a:hover { color: var(--ink); }
-  @media (max-width: 640px) { .nav-links .opt { display: none; } }
-
-  /* hero */
-  header { padding: 84px 0 66px; text-align: center; position: relative; }
-  .hero-logo { width: 128px; height: 128px; filter: drop-shadow(0 10px 44px rgba(56, 189, 248, 0.38)); animation: hover 7s ease-in-out infinite; }
-  @keyframes hover { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
-  @media (prefers-reduced-motion: reduce) {
-    .hero-logo { animation: none; }
-    .reveal { transition: none !important; }
+  .nav-in > svg { width: 28px; height: 28px; flex: none; }
+  .nav-name { font-family: var(--display); font-weight: 700; letter-spacing: 0.01em; font-size: 17px; }
+  .nav-ticker { color: var(--cyan); font-family: var(--mono); font-size: 12.5px; margin-top: 2px; }
+  .nav-links { margin-left: auto; display: flex; gap: 4px; font-size: 14px; align-items: center; }
+  .nav-links a.lnk {
+    color: var(--ink-2); text-decoration: none; padding: 6px 12px; border-radius: 8px;
+    position: relative; transition: color .2s var(--ease), background .2s var(--ease);
   }
+  .nav-links a.lnk:hover { color: var(--ink); background: var(--surface-2); }
+  .nav-links a.lnk.active { color: var(--cyan); }
+  .nav-links a.lnk.active::after {
+    content: ""; position: absolute; left: 12px; right: 12px; bottom: 1px; height: 2px; border-radius: 2px;
+    background: linear-gradient(90deg, var(--cyan), transparent);
+  }
+  .nav-cta {
+    margin-left: 10px; text-decoration: none; font-size: 13.5px; font-weight: 600;
+    padding: 8px 15px; border-radius: 9px; color: #04121d;
+    background: linear-gradient(180deg, var(--cyan), var(--cyan-deep));
+    box-shadow: 0 2px 14px rgba(56, 189, 248, 0.28);
+    transition: filter .2s var(--ease), transform .15s var(--ease);
+  }
+  .nav-cta:hover { filter: brightness(1.1); transform: translateY(-1px); }
+  @media (max-width: 760px) { .nav-links a.opt, .nav-cta { display: none; } }
+
+  /* ---------- hero ---------- */
+  header { padding: 92px 0 74px; text-align: center; position: relative; }
+  .live {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 7px 15px; border-radius: 999px; font-size: 13px; font-weight: 600; letter-spacing: 0.02em;
+    color: var(--ink-2); background: var(--surface); border: 1px solid var(--border);
+  }
+  .live .beacon { position: relative; width: 8px; height: 8px; flex: none; }
+  .live .beacon::before, .live .beacon::after {
+    content: ""; position: absolute; inset: 0; border-radius: 50%; background: var(--good);
+  }
+  .live .beacon::after { animation: ping 2.4s var(--ease) infinite; }
+  @keyframes ping { 0% { transform: scale(1); opacity: .7; } 70%, 100% { transform: scale(2.6); opacity: 0; } }
+
+  .logo-stage { position: relative; width: 148px; height: 148px; margin: 40px auto 0; }
+  .hero-logo {
+    position: absolute; inset: 10px; width: 128px; height: 128px;
+    filter: drop-shadow(0 12px 48px rgba(56, 189, 248, 0.38));
+    animation: hover 7s ease-in-out infinite;
+  }
+  @keyframes hover { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
+  .halo {
+    position: absolute; inset: 0; border-radius: 50%; opacity: .55;
+    background: conic-gradient(from 0deg, transparent 0%, rgba(56,189,248,.75) 12%, transparent 26%, transparent 55%, rgba(56,189,248,.35) 66%, transparent 78%);
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1.5px));
+    mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1.5px));
+    animation: spin 9s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
   h1 {
-    font-size: clamp(42px, 7vw, 64px); font-weight: 800; letter-spacing: -0.025em;
-    margin: 26px 0 0;
+    font-family: var(--display);
+    font-size: clamp(44px, 7vw, 68px); font-weight: 700; letter-spacing: -0.03em;
+    margin: 28px 0 0; line-height: 1.05;
     background: linear-gradient(180deg, #ffffff 30%, #93c9ee);
     -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
   }
-  .tagline { font-size: clamp(17px, 2.6vw, 21px); color: var(--ink-2); margin: 14px auto 0; max-width: 620px; }
+  .tagline { font-size: clamp(17px, 2.6vw, 20.5px); color: var(--ink-2); margin: 16px auto 0; max-width: 640px; }
   .tagline b { color: var(--ink); font-weight: 600; }
 
+  /* hero entrance */
+  .h-anim { opacity: 0; transform: translateY(18px); animation: rise .8s var(--ease) forwards; }
+  .h-anim.d1 { animation-delay: .05s; } .h-anim.d2 { animation-delay: .16s; }
+  .h-anim.d3 { animation-delay: .27s; } .h-anim.d4 { animation-delay: .38s; }
+  .h-anim.d5 { animation-delay: .5s; }  .h-anim.d6 { animation-delay: .62s; }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+
   .addr {
-    margin: 34px auto 0; max-width: 560px;
-    display: flex; align-items: center; gap: 0;
+    margin: 36px auto 0; max-width: 580px;
+    display: flex; align-items: center;
     background: var(--surface-2); border: 1px solid var(--border-strong); border-radius: 14px;
     overflow: hidden;
+    box-shadow: 0 10px 40px rgba(3, 12, 24, 0.5), inset 0 1px 0 rgba(148,197,255,0.08);
   }
   .addr-label {
     padding: 12px 14px; font-size: 11px; font-weight: 700; letter-spacing: 0.09em;
@@ -116,208 +179,318 @@
     color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: left;
   }
   .addr button {
-    flex: none; margin: 6px; padding: 8px 16px; border: 0; border-radius: 9px; cursor: pointer;
+    flex: none; margin: 6px; padding: 9px 16px; border: 0; border-radius: 9px; cursor: pointer;
     background: linear-gradient(180deg, var(--cyan), var(--cyan-deep));
-    color: #04121d; font: 600 13.5px/1 system-ui, sans-serif;
-    transition: filter .15s, transform .1s;
+    color: #04121d; font: 600 13.5px/1 var(--font);
+    transition: filter .2s var(--ease), transform .12s var(--ease), background .2s;
   }
   .addr button:hover { filter: brightness(1.1); }
-  .addr button:active { transform: scale(0.97); }
+  .addr button:active { transform: scale(0.96); }
   .addr button.ok { background: var(--good); }
   @media (max-width: 470px) { .addr-label { display: none; } .addr code { padding-left: 12px; } }
-  .addr-note { margin-top: 12px; font-size: 13.5px; color: var(--muted); }
+  .addr-note { margin-top: 13px; font-size: 13.5px; color: var(--muted); }
   .addr-note b { color: var(--ink-2); font-weight: 600; }
 
   .hero-links { margin-top: 30px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
   .pill {
-    display: inline-flex; align-items: center; gap: 7px;
-    padding: 9px 17px; border-radius: 999px; text-decoration: none; font-size: 14px;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 9px 17px; border-radius: 999px; text-decoration: none; font-size: 14px; font-weight: 500;
     color: var(--ink-2); background: var(--surface); border: 1px solid var(--border);
-    transition: border-color .15s, color .15s, background .15s;
+    transition: border-color .2s var(--ease), color .2s var(--ease), background .2s var(--ease), transform .2s var(--ease);
   }
-  .pill:hover { border-color: var(--border-strong); color: var(--ink); background: var(--surface-2); }
-  .pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); }
+  .pill:hover { border-color: var(--border-strong); color: var(--ink); background: var(--surface-2); transform: translateY(-2px); }
+  .pill svg { width: 15px; height: 15px; flex: none; fill: currentColor; opacity: .85; }
 
-  /* sections */
-  section { padding: 66px 0 8px; }
-  .kicker { font-size: 12px; font-weight: 700; letter-spacing: 0.13em; color: var(--cyan); text-transform: uppercase; margin: 0 0 10px; }
-  h2 { font-size: clamp(26px, 4vw, 34px); letter-spacing: -0.02em; margin: 0 0 10px; }
-  .lede { color: var(--ink-2); max-width: 660px; margin: 0 0 34px; }
+  /* ---------- stats band ---------- */
+  .stats {
+    margin: 78px auto 0; border: 1px solid var(--border); border-radius: 18px;
+    background: linear-gradient(180deg, var(--surface-2), var(--surface));
+    display: grid; grid-template-columns: repeat(4, 1fr); overflow: hidden;
+  }
+  .stat { padding: 26px 18px 24px; text-align: center; border-left: 1px solid var(--border); }
+  .stat:first-child { border-left: 0; }
+  .stat .n {
+    font-family: var(--display); font-size: clamp(28px, 4vw, 38px); font-weight: 700;
+    letter-spacing: -0.02em; font-variant-numeric: tabular-nums;
+    background: linear-gradient(180deg, #fff, #9fd2f3);
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .stat .l { margin-top: 4px; font-size: 12.5px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
+  @media (max-width: 640px) {
+    .stats { grid-template-columns: 1fr 1fr; }
+    .stat:nth-child(3) { border-left: 0; }
+    .stat:nth-child(n+3) { border-top: 1px solid var(--border); }
+  }
+
+  /* ---------- sections ---------- */
+  section { padding: 74px 0 8px; }
+  .kicker { font-size: 12px; font-weight: 700; letter-spacing: 0.14em; color: var(--cyan); text-transform: uppercase; margin: 0 0 10px; }
+  h2 { font-family: var(--display); font-size: clamp(27px, 4vw, 36px); font-weight: 700; letter-spacing: -0.02em; margin: 0 0 10px; }
+  .lede { color: var(--ink-2); max-width: 680px; margin: 0 0 36px; }
   .lede a { color: var(--cyan); text-decoration: none; }
   .lede a:hover { text-decoration: underline; }
 
-  /* guarantees grid */
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+  /* scroll reveal */
+  .rv { opacity: 0; transform: translateY(18px); transition: opacity .7s var(--ease), transform .7s var(--ease); transition-delay: var(--d, 0ms); }
+  .rv.in { opacity: 1; transform: none; }
+
+  /* ---------- guarantee cards ---------- */
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 14px; }
   .cell {
     background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
-    padding: 22px 22px 20px; position: relative; overflow: hidden;
-    transition: border-color .2s, background .2s;
+    padding: 24px 22px 21px; position: relative; overflow: hidden;
+    transition: border-color .25s var(--ease), transform .25s var(--ease), background .25s var(--ease);
   }
-  .cell:hover { border-color: var(--border-strong); background: var(--surface-2); }
+  .cell::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0;
+    background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), rgba(56, 189, 248, 0.11), transparent 65%);
+    transition: opacity .3s var(--ease);
+  }
+  .cell:hover { border-color: var(--border-strong); transform: translateY(-3px); }
+  .cell:hover::after { opacity: 1; }
   .cell .ico {
-    width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center;
+    width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center;
     background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.25);
-    margin-bottom: 14px; font-size: 17px;
+    margin-bottom: 15px; font-size: 18px;
   }
-  .cell h3 { font-size: 16.5px; margin: 0 0 6px; }
+  .cell h3 { font-family: var(--display); font-size: 17px; font-weight: 600; margin: 0 0 6px; }
   .cell p { font-size: 14px; color: var(--ink-2); margin: 0; }
   .cell code { font-family: var(--mono); font-size: 12.5px; color: var(--cyan); }
 
-  /* tokenomics */
+  /* ---------- tokenomics ---------- */
   .tok-total { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 26px; }
-  .tok-total .n { font-size: clamp(34px, 5vw, 46px); font-weight: 800; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
-  .tok-total .u { color: var(--ink-2); }
-  .split { display: flex; height: 46px; border-radius: 12px; overflow: hidden; gap: 3px; margin-bottom: 18px; }
+  .split { display: flex; height: 48px; border-radius: 12px; overflow: hidden; gap: 3px; margin-bottom: 18px; }
   .split > div {
-    display: grid; place-items: center; color: #04121d; font-weight: 700; font-size: 14px;
-    min-width: 44px;
+    display: grid; place-items: center; color: #04121d;
+    font-family: var(--display); font-weight: 700; font-size: 14px;
+    flex: 0 0 var(--w, 0%); min-width: 0; overflow: hidden; white-space: nowrap;
+    transition: flex-basis 1.1s var(--ease);
   }
-  .split .pool { background: linear-gradient(180deg, #38bdf8, #0ea5e9); flex: 50; }
-  .split .burn { background: linear-gradient(180deg, #f0a24b, #e2762b); flex: 30; }
-  .split .team { background: linear-gradient(180deg, #7dd3c8, #3aa899); flex: 15; }
-  .split .give { background: linear-gradient(180deg, #c4b5fd, #9d84f0); flex: 5; }
+  .split > div span { opacity: 0; transition: opacity .4s ease .8s; }
+  .split.go > div { flex-basis: var(--to); }
+  .split.go > div span { opacity: 1; }
+  .split .pool { background: linear-gradient(180deg, #38bdf8, #0ea5e9); --to: 50%; }
+  .split .burn { background: linear-gradient(180deg, #f0a24b, #e2762b); --to: 30%; transition-delay: .1s; }
+  .split .team { background: linear-gradient(180deg, #7dd3c8, #3aa899); --to: 15%; transition-delay: .2s; }
+  .split .give { background: linear-gradient(180deg, #c4b5fd, #9d84f0); --to: 5%; transition-delay: .3s; }
   .tok-rows { display: grid; gap: 10px; }
   .tok-row {
     display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
-    background: var(--surface); border: 1px solid var(--border); border-radius: 13px; padding: 14px 18px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 13px; padding: 15px 18px;
+    transition: border-color .25s var(--ease), background .25s var(--ease);
   }
+  .tok-row:hover { border-color: var(--border-strong); background: var(--surface-2); }
   .tok-row .sw { width: 12px; height: 12px; border-radius: 4px; flex: none; }
   .tok-row .what { font-weight: 600; min-width: 150px; }
   .tok-row .amt { font-family: var(--mono); font-size: 13.5px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
   .tok-row .why { flex: 1 1 240px; font-size: 13.5px; color: var(--muted); }
-  .badge {
-    margin-left: auto; flex: none; font-size: 12px; font-weight: 600; padding: 3px 11px; border-radius: 999px;
-  }
+  .badge { margin-left: auto; flex: none; font-size: 12px; font-weight: 600; padding: 3px 11px; border-radius: 999px; }
   .badge.on { background: rgba(52, 211, 153, 0.13); color: var(--good); border: 1px solid rgba(52, 211, 153, 0.3); }
   .badge.soon { background: rgba(251, 191, 36, 0.1); color: var(--warn); border: 1px solid rgba(251, 191, 36, 0.28); }
 
-  /* ledger */
+  /* ---------- ledger ---------- */
   .ledger { border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
   .ledger-row {
-    display: flex; align-items: center; gap: 16px; padding: 17px 20px;
+    display: flex; align-items: center; gap: 16px; padding: 18px 20px;
     border-top: 1px solid var(--border); background: var(--surface); flex-wrap: wrap;
+    transition: background .25s var(--ease);
   }
+  .ledger-row:hover { background: var(--surface-2); }
   .ledger-row:first-child { border-top: 0; }
-  .ledger-row .mark { flex: none; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-size: 13px; }
+  .ledger-row .mark { flex: none; width: 27px; height: 27px; border-radius: 50%; display: grid; place-items: center; font-size: 13px; }
   .mark.done { background: rgba(52, 211, 153, 0.14); color: var(--good); border: 1px solid rgba(52, 211, 153, 0.35); }
+  .mark.done svg { width: 13px; height: 13px; }
+  .mark.done svg path {
+    fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round;
+    stroke-dasharray: 24; stroke-dashoffset: 24;
+    transition: stroke-dashoffset .6s var(--ease) .35s;
+  }
+  .rv.in .mark.done svg path { stroke-dashoffset: 0; }
   .mark.todo { background: rgba(251, 191, 36, 0.09); color: var(--warn); border: 1px dashed rgba(251, 191, 36, 0.4); }
   .ledger-row .t { font-weight: 600; font-size: 15px; }
   .ledger-row .d { font-size: 13.5px; color: var(--muted); }
   .ledger-row .d a { color: var(--cyan); text-decoration: none; font-family: var(--mono); font-size: 12.5px; }
   .ledger-row .d a:hover { text-decoration: underline; }
-  .ledger-row.pending { opacity: 0.75; }
+  .ledger-row.pending { opacity: 0.72; }
   .ledger-note { margin-top: 14px; font-size: 13.5px; color: var(--muted); }
+  .ledger-note a { color: var(--cyan); text-decoration: none; }
+  .ledger-note a:hover { text-decoration: underline; }
 
-  /* wallet steps */
+  /* ---------- community ---------- */
+  .socials { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+  .soc {
+    display: block; text-decoration: none; color: inherit;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+    padding: 24px 22px 22px; position: relative; overflow: hidden;
+    transition: border-color .25s var(--ease), transform .25s var(--ease);
+  }
+  .soc::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0;
+    background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), rgba(56, 189, 248, 0.11), transparent 65%);
+    transition: opacity .3s var(--ease);
+  }
+  .soc:hover { border-color: var(--border-strong); transform: translateY(-3px); }
+  .soc:hover::after { opacity: 1; }
+  .soc .top { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .soc .s-ico {
+    width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; flex: none;
+    background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.25); color: var(--ink);
+  }
+  .soc .s-ico svg { width: 18px; height: 18px; fill: currentColor; }
+  .soc h3 { font-family: var(--display); font-size: 16.5px; font-weight: 600; margin: 0; }
+  .soc .handle { font-family: var(--mono); font-size: 12.5px; color: var(--cyan); }
+  .soc p { font-size: 14px; color: var(--ink-2); margin: 0; }
+  .soc .go {
+    position: absolute; top: 20px; right: 20px; color: var(--muted); font-size: 15px;
+    transition: color .2s var(--ease), transform .25s var(--ease);
+  }
+  .soc:hover .go { color: var(--cyan); transform: translate(2px, -2px); }
+  .official-note {
+    margin-top: 16px; font-size: 13.5px; color: var(--muted);
+    border-left: 2px solid rgba(56, 189, 248, 0.4); padding-left: 12px;
+  }
+  .official-note b { color: var(--ink-2); }
+
+  /* ---------- wallet steps ---------- */
   .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; counter-reset: step; }
-  .step { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 22px; }
+  .step {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px 22px;
+    transition: border-color .25s var(--ease), transform .25s var(--ease);
+  }
+  .step:hover { border-color: var(--border-strong); transform: translateY(-3px); }
   .step::before {
     counter-increment: step; content: counter(step);
-    display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%;
+    display: grid; place-items: center; width: 31px; height: 31px; border-radius: 50%;
     background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.3);
-    color: var(--cyan); font-weight: 700; font-size: 14px; margin-bottom: 13px;
+    color: var(--cyan); font-family: var(--display); font-weight: 700; font-size: 14px; margin-bottom: 14px;
   }
   .step p { margin: 0; font-size: 14.5px; color: var(--ink-2); }
   .step b { color: var(--ink); }
   .step code { font-family: var(--mono); font-size: 12px; color: var(--cyan); word-break: break-all; }
 
-  /* footer */
-  footer { margin-top: 76px; border-top: 1px solid var(--border); padding: 40px 0 56px; }
+  /* ---------- footer ---------- */
+  footer { margin-top: 84px; border-top: 1px solid var(--border); padding: 42px 0 58px; }
   .foot-grid { display: flex; gap: 40px; flex-wrap: wrap; justify-content: space-between; }
   .foot-brand { display: flex; align-items: center; gap: 10px; }
   .foot-brand svg { width: 30px; height: 30px; }
-  .foot-links { display: flex; gap: 22px; flex-wrap: wrap; font-size: 14px; }
-  .foot-links a { color: var(--ink-2); text-decoration: none; }
+  .foot-links { display: flex; gap: 22px; flex-wrap: wrap; font-size: 14px; align-items: center; }
+  .foot-links a { color: var(--ink-2); text-decoration: none; transition: color .2s var(--ease); }
   .foot-links a:hover { color: var(--ink); }
-  .disclaimer { margin-top: 28px; font-size: 13px; color: var(--muted); max-width: 760px; line-height: 1.7; }
+  .disclaimer { margin-top: 28px; font-size: 13px; color: var(--muted); max-width: 780px; line-height: 1.7; }
 
-  /* reveal on scroll */
-  .reveal { opacity: 0; transform: translateY(14px); transition: opacity .55s ease, transform .55s ease; }
-  .reveal.in { opacity: 1; transform: none; }
+  /* ---------- reduced motion ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .hero-logo, .halo, .live .beacon::after { animation: none; }
+    .h-anim { animation: none; opacity: 1; transform: none; }
+    .rv { transition: none; opacity: 1; transform: none; }
+    .split > div, .split > div span { transition: none; }
+    .split > div { flex-basis: var(--to); }
+    .split > div span { opacity: 1; }
+    .mark.done svg path { transition: none; stroke-dashoffset: 0; }
+  }
 </style>
 </head>
 <body>
 <div class="sky"></div>
+<div class="progress" id="progress"></div>
 
-<nav>
+<nav id="nav">
   <div class="wrap nav-in">
     <svg viewBox="0 0 256 256" aria-hidden="true"><defs><linearGradient id="lgn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#38BDF8"/><stop offset="1" stop-color="#075E8F"/></linearGradient></defs><circle cx="128" cy="128" r="128" fill="url(#lgn)"/><g stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" opacity=".45" fill="none"><path d="M128 130 L64 166 M128 130 L192 166 M128 130 L128 54"/></g><g stroke="#fff" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M128 54 L192 90 L192 166 L128 202 L64 166 L64 90 Z"/><path d="M128 126 L64 90 M128 126 L192 90 M128 126 L128 202"/></g></svg>
     <span class="nav-name">Nexiora</span>
     <span class="nav-ticker">$NXIO</span>
     <div class="nav-links">
-      <a href="#immutable" class="opt">Design</a>
-      <a href="#tokenomics">Tokenomics</a>
-      <a href="#proof">Proof</a>
-      <a href="#wallet" class="opt">Wallet</a>
+      <a class="lnk opt" href="#immutable">Design</a>
+      <a class="lnk" href="#tokenomics">Tokenomics</a>
+      <a class="lnk" href="#proof">Proof</a>
+      <a class="lnk opt" href="#community">Community</a>
+      <a class="nav-cta" href="https://basescan.org/token/0x90103aFee7f15f96A2DCBa2b7FF5459BfbfC4CaD" target="_blank" rel="noopener">View contract ↗</a>
     </div>
   </div>
 </nav>
 
 <header class="wrap">
-  <svg class="hero-logo" viewBox="0 0 256 256" role="img" aria-label="Nexiora logo — a glass block"><defs><linearGradient id="lgh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#38BDF8"/><stop offset="1" stop-color="#075E8F"/></linearGradient></defs><circle cx="128" cy="128" r="128" fill="url(#lgh)"/><g stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" opacity=".45" fill="none"><path d="M128 130 L64 166 M128 130 L192 166 M128 130 L128 54"/></g><g stroke="#fff" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M128 54 L192 90 L192 166 L128 202 L64 166 L64 90 Z"/><path d="M128 126 L64 90 M128 126 L192 90 M128 126 L128 202"/></g></svg>
-  <h1>Nexiora</h1>
-  <p class="tagline">A fixed-supply token on Base whose contract <b>can never be changed</b> — no owner, no minting, no pausing. Like a glass block: you can see all the way through, and nobody can reshape it.</p>
+  <div class="h-anim d1"><span class="live"><span class="beacon"></span>Live on Base mainnet</span></div>
 
-  <div class="addr">
-    <span class="addr-label">BASE&nbsp;MAINNET</span>
-    <code id="addr">0x90103aFee7f15f96A2DCBa2b7FF5459BfbfC4CaD</code>
-    <button id="copyBtn" type="button">Copy</button>
+  <div class="logo-stage h-anim d2">
+    <div class="halo" aria-hidden="true"></div>
+    <svg class="hero-logo" viewBox="0 0 256 256" role="img" aria-label="Nexiora logo — a glass block"><defs><linearGradient id="lgh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#38BDF8"/><stop offset="1" stop-color="#075E8F"/></linearGradient></defs><circle cx="128" cy="128" r="128" fill="url(#lgh)"/><g stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" opacity=".45" fill="none"><path d="M128 130 L64 166 M128 130 L192 166 M128 130 L128 54"/></g><g stroke="#fff" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M128 54 L192 90 L192 166 L128 202 L64 166 L64 90 Z"/><path d="M128 126 L64 90 M128 126 L192 90 M128 126 L128 202"/></g></svg>
   </div>
-  <p class="addr-note">This is the <b>only</b> official NXIO contract, on the <b>only</b> network it exists on. Anything else is fake.</p>
 
-  <div class="hero-links">
-    <a class="pill" href="https://basescan.org/token/0x90103aFee7f15f96A2DCBa2b7FF5459BfbfC4CaD" target="_blank" rel="noopener"><span class="dot"></span>Basescan</a>
-    <a class="pill" href="https://base.blockscout.com/address/0x90103aFee7f15f96A2DCBa2b7FF5459BfbfC4CaD" target="_blank" rel="noopener"><span class="dot"></span>Blockscout</a>
-    <a class="pill" href="https://github.com/tradeytrade/Nexiora" target="_blank" rel="noopener"><span class="dot"></span>GitHub</a>
+  <h1 class="h-anim d3">Nexiora</h1>
+  <p class="tagline h-anim d3">A fixed-supply token on Base whose contract <b>can never be changed</b> — no owner, no minting, no pausing. Like a glass block: you can see all the way through, and nobody can reshape it.</p>
+
+  <div class="h-anim d4">
+    <div class="addr">
+      <span class="addr-label">BASE&nbsp;MAINNET</span>
+      <code id="addr">0x90103aFee7f15f96A2DCBa2b7FF5459BfbfC4CaD</code>
+      <button id="copyBtn" type="button">Copy</button>
+    </div>
+    <p class="addr-note">This is the <b>only</b> official NXIO contract, on the <b>only</b> network it exists on. Anything else is fake.</p>
+  </div>
+
+  <div class="hero-links h-anim d5">
+    <a class="pill" href="https://basescan.org/token/0x90103aFee7f15f96A2DCBa2b7FF5459BfbfC4CaD" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8zm1-13h-2v6l5.25 3.15 1-1.65-4.25-2.5z"/></svg>Basescan</a>
+    <a class="pill" href="https://x.com/Nexiora_" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>@Nexiora_</a>
+    <a class="pill" href="https://t.me/Nexiora_t" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>Telegram</a>
+    <a class="pill" href="https://github.com/tradeytrade/Nexiora" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>GitHub</a>
+  </div>
+
+  <div class="stats h-anim d6" aria-label="Key facts">
+    <div class="stat"><div class="n"><span class="cnt" data-to="10">0</span>B</div><div class="l">Fixed supply</div></div>
+    <div class="stat"><div class="n"><span class="cnt" data-to="0">0</span></div><div class="l">Admin functions</div></div>
+    <div class="stat"><div class="n"><span class="cnt" data-to="0">0</span>%</div><div class="l">Transfer tax</div></div>
+    <div class="stat"><div class="n"><span class="cnt" data-to="15">0</span></div><div class="l">Lines of code</div></div>
   </div>
 </header>
 
-<section id="immutable" class="wrap reveal">
-  <p class="kicker">Immutable by construction</p>
-  <h2>What this contract can never do</h2>
-  <p class="lede">The entire contract is <a href="https://github.com/tradeytrade/Nexiora/blob/main/contracts/Nexiora.sol" target="_blank" rel="noopener">15 lines</a> on top of OpenZeppelin's audited ERC-20. The full 10&#8201;billion supply was minted once, in the constructor — and there is no owner and not a single admin function. These aren't promises; they're absences of code, verifiable by anyone.</p>
+<section id="immutable" class="wrap">
+  <p class="kicker rv">Immutable by construction</p>
+  <h2 class="rv">What this contract can never do</h2>
+  <p class="lede rv">The entire contract is <a href="https://github.com/tradeytrade/Nexiora/blob/main/contracts/Nexiora.sol" target="_blank" rel="noopener">15 lines</a> on top of OpenZeppelin's audited ERC-20. The full 10&#8201;billion supply was minted once, in the constructor — and there is no owner and not a single admin function. These aren't promises; they're absences of code, verifiable by anyone.</p>
   <div class="grid">
-    <div class="cell"><div class="ico">🚫</div><h3>No minting</h3><p>There is no mint function. The supply is 10,000,000,000 NXIO today, and it will be 10,000,000,000 NXIO in fifty years.</p></div>
-    <div class="cell"><div class="ico">❄️</div><h3>No pausing</h3><p>Transfers can never be frozen — not for everyone, not for anyone. The contract has no pause switch to flip.</p></div>
-    <div class="cell"><div class="ico">🔓</div><h3>No blacklist</h3><p>No address can ever be blocked from sending or receiving. There is no list, and no one with the keys to keep one.</p></div>
-    <div class="cell"><div class="ico">💸</div><h3>No fees or taxes</h3><p>Send 100 NXIO, and 100 NXIO arrives. No transfer tax, no reflections, no hidden skim — ever.</p></div>
-    <div class="cell"><div class="ico">🧊</div><h3>No upgrades</h3><p>Not a proxy. The bytecode on-chain today is final — no one can swap in different behavior later.</p></div>
-    <div class="cell"><div class="ico">👤</div><h3>No owner</h3><p>The deploying wallet kept <code>0 NXIO</code> and zero special powers. There is no privileged address at all.</p></div>
+    <div class="cell rv"><div class="ico">🚫</div><h3>No minting</h3><p>There is no mint function. The supply is 10,000,000,000 NXIO today, and it will be 10,000,000,000 NXIO in fifty years.</p></div>
+    <div class="cell rv"><div class="ico">❄️</div><h3>No pausing</h3><p>Transfers can never be frozen — not for everyone, not for anyone. The contract has no pause switch to flip.</p></div>
+    <div class="cell rv"><div class="ico">🔓</div><h3>No blacklist</h3><p>No address can ever be blocked from sending or receiving. There is no list, and no one with the keys to keep one.</p></div>
+    <div class="cell rv"><div class="ico">💸</div><h3>No fees or taxes</h3><p>Send 100 NXIO, and 100 NXIO arrives. No transfer tax, no reflections, no hidden skim — ever.</p></div>
+    <div class="cell rv"><div class="ico">🧊</div><h3>No upgrades</h3><p>Not a proxy. The bytecode on-chain today is final — no one can swap in different behavior later.</p></div>
+    <div class="cell rv"><div class="ico">👤</div><h3>No owner</h3><p>The deploying wallet kept <code>0 NXIO</code> and zero special powers. There is no privileged address at all.</p></div>
   </div>
 </section>
 
-<section id="tokenomics" class="wrap reveal">
-  <p class="kicker">Tokenomics</p>
-  <h2>10,000,000,000 — fixed forever</h2>
-  <p class="lede">The launch allocation is deliberately simple, and every move below happens in public, on-chain, from labeled wallets. Items marked <i>upcoming</i> are executed during the launch sequence and get their transaction proof linked here the moment they land.</p>
+<section id="tokenomics" class="wrap">
+  <p class="kicker rv">Tokenomics</p>
+  <h2 class="rv">10,000,000,000 — fixed forever</h2>
+  <p class="lede rv">The launch allocation is deliberately simple, and every move below happens in public, on-chain, from labeled wallets. Items marked <i>upcoming</i> are executed during the launch sequence and get their transaction proof linked here the moment they land.</p>
 
-  <div class="split" aria-hidden="true">
-    <div class="pool">50%</div><div class="burn">30%</div><div class="team">15%</div><div class="give">5%</div>
+  <div class="split rv" id="split" aria-hidden="true">
+    <div class="pool"><span>50%</span></div><div class="burn"><span>30%</span></div><div class="team"><span>15%</span></div><div class="give"><span>5%</span></div>
   </div>
 
   <div class="tok-rows">
-    <div class="tok-row">
+    <div class="tok-row rv">
       <span class="sw" style="background:#38bdf8"></span>
       <span class="what">Liquidity pool</span>
       <span class="amt">5,000,000,000</span>
       <span class="why">Paired with ETH on Uniswap (Base), then the LP position is burned — liquidity locked forever, rug impossible.</span>
       <span class="badge soon">upcoming</span>
     </div>
-    <div class="tok-row">
+    <div class="tok-row rv">
       <span class="sw" style="background:#f0a24b"></span>
       <span class="what">Burned</span>
       <span class="amt">3,000,000,000</span>
       <span class="why">Sent to the dead address <span style="font-family:var(--mono);font-size:12px">0x…dEaD</span> — permanently out of circulation, verifiable on-chain.</span>
       <span class="badge soon">upcoming</span>
     </div>
-    <div class="tok-row">
+    <div class="tok-row rv">
       <span class="sw" style="background:#7dd3c8"></span>
       <span class="what">Creator</span>
       <span class="amt">1,500,000,000</span>
       <span class="why">Held transparently in the public creator wallet. Small enough that no single wallet can nuke the chart.</span>
       <span class="badge on">on-chain</span>
     </div>
-    <div class="tok-row">
+    <div class="tok-row rv">
       <span class="sw" style="background:#c4b5fd"></span>
       <span class="what">Community &amp; giveaways</span>
       <span class="amt">500,000,000</span>
@@ -327,48 +500,48 @@
   </div>
 </section>
 
-<section id="proof" class="wrap reveal">
-  <p class="kicker">Don't trust — verify</p>
-  <h2>Transparency ledger</h2>
-  <p class="lede">Every claim on this page maps to something you can check yourself. This ledger is updated as each launch step executes; pending steps are listed before they happen, so you always know what's next.</p>
+<section id="proof" class="wrap">
+  <p class="kicker rv">Don't trust — verify</p>
+  <h2 class="rv">Transparency ledger</h2>
+  <p class="lede rv">Every claim on this page maps to something you can check yourself. This ledger is updated as each launch step executes; pending steps are listed before they happen, so you always know what's next.</p>
 
   <div class="ledger">
-    <div class="ledger-row">
-      <span class="mark done">✓</span>
+    <div class="ledger-row rv">
+      <span class="mark done"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>
       <div>
         <div class="t">Contract deployed on Base mainnet</div>
         <div class="d">2026-07-07 · <a href="https://basescan.org/tx/0xec642ed6452b218430023f0cd7bf89607ccb6e60af61c83411136c501439eeee" target="_blank" rel="noopener">0xec642e…9eeee</a></div>
       </div>
     </div>
-    <div class="ledger-row">
-      <span class="mark done">✓</span>
+    <div class="ledger-row rv">
+      <span class="mark done"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>
       <div>
         <div class="t">Source code verified — exact bytecode match</div>
         <div class="d">Reproducible from the public repo · <a href="https://sourcify.dev/#/lookup/0x90103aFee7f15f96A2DCBa2b7FF5459BfbfC4CaD" target="_blank" rel="noopener">Sourcify</a> · <a href="https://base.blockscout.com/address/0x90103aFee7f15f96A2DCBa2b7FF5459BfbfC4CaD?tab=contract" target="_blank" rel="noopener">Blockscout</a></div>
       </div>
     </div>
-    <div class="ledger-row">
-      <span class="mark done">✓</span>
+    <div class="ledger-row rv">
+      <span class="mark done"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>
       <div>
         <div class="t">Independent security scan — clean</div>
         <div class="d">GoPlus token security, 2026-07-08: open source, no mint / pause / blacklist / proxy / taxes / honeypot indicators · <a href="https://gopluslabs.io/token-security/8453/0x90103aFee7f15f96A2DCBa2b7FF5459BfbfC4CaD" target="_blank" rel="noopener">run it yourself</a></div>
       </div>
     </div>
-    <div class="ledger-row pending">
+    <div class="ledger-row pending rv">
       <span class="mark todo">…</span>
       <div>
         <div class="t">Burn of 3,000,000,000 NXIO</div>
         <div class="d">Transaction hash will be linked here the moment it confirms.</div>
       </div>
     </div>
-    <div class="ledger-row pending">
+    <div class="ledger-row pending rv">
       <span class="mark todo">…</span>
       <div>
         <div class="t">Uniswap pool created (NXIO / ETH, Base)</div>
         <div class="d">Pool address and live chart link will appear here at launch.</div>
       </div>
     </div>
-    <div class="ledger-row pending">
+    <div class="ledger-row pending rv">
       <span class="mark todo">…</span>
       <div>
         <div class="t">LP position burned — liquidity locked forever</div>
@@ -376,17 +549,51 @@
       </div>
     </div>
   </div>
-  <p class="ledger-note">Reproduce the verification yourself: <a href="https://github.com/tradeytrade/Nexiora/blob/main/artifacts/verify-input.json" target="_blank" rel="noopener" style="color:var(--cyan);text-decoration:none">artifacts/verify-input.json</a> in the repo is the exact compiler input (solc 0.8.28, optimizer 200 runs) that produces the deployed bytecode.</p>
+  <p class="ledger-note rv">Reproduce the verification yourself: <a href="https://github.com/tradeytrade/Nexiora/blob/main/artifacts/verify-input.json" target="_blank" rel="noopener">artifacts/verify-input.json</a> in the repo is the exact compiler input (solc 0.8.28, optimizer 200 runs) that produces the deployed bytecode.</p>
 </section>
 
-<section id="wallet" class="wrap reveal">
-  <p class="kicker">Get set up</p>
-  <h2>Add NXIO to your wallet</h2>
-  <p class="lede">NXIO is a standard ERC-20 — any wallet that speaks Base can hold it.</p>
+<section id="community" class="wrap">
+  <p class="kicker rv">Community</p>
+  <h2 class="rv">Built in public — follow along</h2>
+  <p class="lede rv">NXIO is an experiment in launching a small token honestly, and everything happens in the open: the code, the wallets, the launch steps, the mistakes. These are the official channels.</p>
+
+  <div class="socials">
+    <a class="soc rv" href="https://x.com/Nexiora_" target="_blank" rel="noopener">
+      <span class="go">↗</span>
+      <div class="top">
+        <span class="s-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></span>
+        <div><h3>Follow on X</h3><span class="handle">@Nexiora_</span></div>
+      </div>
+      <p>Announcements, launch-step proofs and build-in-public updates — everything lands here first.</p>
+    </a>
+    <a class="soc rv" href="https://t.me/Nexiora_t" target="_blank" rel="noopener">
+      <span class="go">↗</span>
+      <div class="top">
+        <span class="s-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></span>
+        <div><h3>Join the Telegram</h3><span class="handle">t.me/Nexiora_t</span></div>
+      </div>
+      <p>The community hub — ask anything, get answers directly. Slow mode on, scam bots purged.</p>
+    </a>
+    <a class="soc rv" href="https://github.com/tradeytrade/Nexiora" target="_blank" rel="noopener">
+      <span class="go">↗</span>
+      <div class="top">
+        <span class="s-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></span>
+        <div><h3>Read the code</h3><span class="handle">github.com/tradeytrade/Nexiora</span></div>
+      </div>
+      <p>Every line is public: the 15-line contract, deploy scripts, compiler artifacts and verification inputs.</p>
+    </a>
+  </div>
+  <p class="official-note rv"><b>These are the only official NXIO channels.</b> Nobody from Nexiora will ever DM you first, ask for your seed phrase, or promise returns. Anyone who does is a scammer.</p>
+</section>
+
+<section id="wallet" class="wrap">
+  <p class="kicker rv">Get set up</p>
+  <h2 class="rv">Add NXIO to your wallet</h2>
+  <p class="lede rv">NXIO is a standard ERC-20 — any wallet that speaks Base can hold it.</p>
   <div class="steps">
-    <div class="step"><p>Switch your wallet's network to <b>Base</b> (chain ID 8453). It's built into MetaMask, Coinbase Wallet, Rabby and most others.</p></div>
-    <div class="step"><p>Choose <b>Import token</b> → custom token, and paste the official contract address:<br><code>0x90103aFee7f15f96A2DCBa2b7FF5459BfbfC4CaD</code></p></div>
-    <div class="step"><p>Symbol <b>NXIO</b> and <b>18 decimals</b> are detected automatically. Double-check the address matches this page — character for character.</p></div>
+    <div class="step rv"><p>Switch your wallet's network to <b>Base</b> (chain ID 8453). It's built into MetaMask, Coinbase Wallet, Rabby and most others.</p></div>
+    <div class="step rv"><p>Choose <b>Import token</b> → custom token, and paste the official contract address:<br><code>0x90103aFee7f15f96A2DCBa2b7FF5459BfbfC4CaD</code></p></div>
+    <div class="step rv"><p>Symbol <b>NXIO</b> and <b>18 decimals</b> are detected automatically. Double-check the address matches this page — character for character.</p></div>
   </div>
 </section>
 
@@ -395,13 +602,15 @@
     <div class="foot-grid">
       <div class="foot-brand">
         <svg viewBox="0 0 256 256" aria-hidden="true"><defs><linearGradient id="lgf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#38BDF8"/><stop offset="1" stop-color="#075E8F"/></linearGradient></defs><circle cx="128" cy="128" r="128" fill="url(#lgf)"/><g stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" opacity=".45" fill="none"><path d="M128 130 L64 166 M128 130 L192 166 M128 130 L128 54"/></g><g stroke="#fff" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M128 54 L192 90 L192 166 L128 202 L64 166 L64 90 Z"/><path d="M128 126 L64 90 M128 126 L192 90 M128 126 L128 202"/></g></svg>
-        <div><div style="font-weight:700">Nexiora</div><div style="font-size:12.5px;color:var(--muted)">$NXIO · Base mainnet</div></div>
+        <div><div style="font-family:var(--display);font-weight:700">Nexiora</div><div style="font-size:12.5px;color:var(--muted)">$NXIO · Base mainnet</div></div>
       </div>
       <div class="foot-links">
         <a href="https://basescan.org/token/0x90103aFee7f15f96A2DCBa2b7FF5459BfbfC4CaD" target="_blank" rel="noopener">Basescan</a>
         <a href="https://base.blockscout.com/address/0x90103aFee7f15f96A2DCBa2b7FF5459BfbfC4CaD" target="_blank" rel="noopener">Blockscout</a>
         <a href="https://sourcify.dev/#/lookup/0x90103aFee7f15f96A2DCBa2b7FF5459BfbfC4CaD" target="_blank" rel="noopener">Sourcify</a>
         <a href="https://github.com/tradeytrade/Nexiora" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://x.com/Nexiora_" target="_blank" rel="noopener">X</a>
+        <a href="https://t.me/Nexiora_t" target="_blank" rel="noopener">Telegram</a>
       </div>
     </div>
     <p class="disclaimer">NXIO is a community token, launched in public as an experiment in doing a small token honestly. Nothing on this page is financial advice, and nothing here is a promise of value, profit, or future development. The contract is immutable and unaudited beyond its OpenZeppelin base; interacting with smart contracts carries risk. Never share your seed phrase with anyone, and always verify the contract address — scammers clone token names. Do your own research.</p>
@@ -409,6 +618,10 @@
 </footer>
 
 <script>
+  "use strict";
+  const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* copy address */
   const btn = document.getElementById("copyBtn");
   btn.addEventListener("click", async () => {
     const addr = document.getElementById("addr").textContent.trim();
@@ -421,10 +634,85 @@
     setTimeout(() => { btn.textContent = "Copy"; btn.classList.remove("ok"); }, 1800);
   });
 
+  /* staggered scroll reveal */
+  const rvEls = [...document.querySelectorAll(".rv")];
+  const groups = new Map();
+  rvEls.forEach((el) => {
+    const p = el.parentElement;
+    const i = (groups.get(p) || 0);
+    groups.set(p, i + 1);
+    el.style.setProperty("--d", (i * 75) + "ms");
+  });
   const io = new IntersectionObserver((entries) => {
-    entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
-  }, { threshold: 0.08 });
-  document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+    entries.forEach((e) => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add("in");
+      io.unobserve(e.target);
+      if (e.target.id === "split") e.target.classList.add("go");
+    });
+  }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+  rvEls.forEach((el) => io.observe(el));
+
+  /* animated counters */
+  const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+  const runCounter = (el) => {
+    const to = +el.dataset.to;
+    if (reduceMotion || to === 0) { el.textContent = to; return; }
+    const t0 = performance.now(), dur = 1300;
+    const tick = (now) => {
+      const p = Math.min((now - t0) / dur, 1);
+      el.textContent = Math.round(easeOut(p) * to);
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  };
+  const cntIO = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (!e.isIntersecting) return;
+      runCounter(e.target); cntIO.unobserve(e.target);
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll(".cnt").forEach((el) => cntIO.observe(el));
+
+  /* nav: scrolled state + progress bar */
+  const nav = document.getElementById("nav");
+  const bar = document.getElementById("progress");
+  let raf = 0;
+  const onScroll = () => {
+    if (raf) return;
+    raf = requestAnimationFrame(() => {
+      raf = 0;
+      nav.classList.toggle("scrolled", scrollY > 8);
+      const max = document.documentElement.scrollHeight - innerHeight;
+      bar.style.transform = "scaleX(" + (max > 0 ? scrollY / max : 0) + ")";
+    });
+  };
+  addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  /* nav scrollspy */
+  const links = [...document.querySelectorAll(".nav-links a.lnk")];
+  const spy = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (!e.isIntersecting) return;
+      links.forEach((a) => a.classList.toggle("active", a.getAttribute("href") === "#" + e.target.id));
+    });
+  }, { rootMargin: "-35% 0px -55% 0px" });
+  ["immutable", "tokenomics", "proof", "community", "wallet"].forEach((id) => {
+    const s = document.getElementById(id);
+    if (s) spy.observe(s);
+  });
+
+  /* mouse-tracking glow on cards */
+  if (!reduceMotion && matchMedia("(hover: hover)").matches) {
+    document.querySelectorAll(".cell, .soc").forEach((card) => {
+      card.addEventListener("pointermove", (e) => {
+        const r = card.getBoundingClientRect();
+        card.style.setProperty("--mx", (e.clientX - r.left) + "px");
+        card.style.setProperty("--my", (e.clientY - r.top) + "px");
+      });
+    });
+  }
 </script>
 </body>
 </html>
