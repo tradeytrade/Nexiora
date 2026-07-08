@@ -2,3 +2,4 @@ node_modules/
 .deployer*.json
 launch-plan.html
 branding/
+token-info-submission.md
