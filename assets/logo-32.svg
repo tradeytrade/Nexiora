@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 256 256">
+  <!-- Nexiora ($NXIO) official logo — "Glass Block", Ice Glass palette -->
+  <defs>
+    <linearGradient id="nxio" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#38BDF8"/>
+      <stop offset="1" stop-color="#075E8F"/>
+    </linearGradient>
+  </defs>
+  <circle cx="128" cy="128" r="128" fill="url(#nxio)"/>
+  <!-- hidden (see-through) edges: the glass effect -->
+  <g stroke="#ffffff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" opacity="0.45" fill="none">
+    <path d="M128 130 L64 166 M128 130 L192 166 M128 130 L128 54"/>
+  </g>
+  <!-- visible edges of the block -->
+  <g stroke="#ffffff" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M128 54 L192 90 L192 166 L128 202 L64 166 L64 90 Z"/>
+    <path d="M128 126 L64 90 M128 126 L192 90 M128 126 L128 202"/>
+  </g>
+</svg>
